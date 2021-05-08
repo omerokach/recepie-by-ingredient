@@ -32,21 +32,30 @@ const createRefreshToken = (user) => {
 module.exports.signup_post = async (req, res) => {
   let { email, firstName, lastName, password } = req.body;
   try {
-    const ifExist = await User.find({email: email});
+    const ifExist = await User.find({ email: email });
     console.log(ifExist);
-    if(ifExist){
-        return res.status(409).send("User already exist");
-    }else{
-        password = hashSync(password, genSaltSync(10));
-        console.log({ email, firstName, lastName, password });
-        const newUser = new User({ email, firstName, lastName, password });
-        const saveRes = await newUser.save();
-        const token = createToken(newUser);
-        const refreshToken = createRefreshToken(newUser);
-        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(201).json({ newUser });
+    if (ifExist.length !== 0) {
+      return res.status(409).send("User already exist");
+    } else {
+      if (password.length < 6) {
+        return res.status(403).send("Password must be minimun 6 length");
+      }
+      const newUser = new User({ email, firstName, lastName, password });
+      const error = newUser.validateSync();
+      console.log(error);
+      const saveRes = await newUser.save();
+      const token = createToken(newUser);
+      const refreshToken = createRefreshToken(newUser);
+      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.status(201).json({ newUser });
     }
   } catch (error) {
-    res.status(500).json(error);
+    if (error.name == "ValidationError") {
+      for (field in error.errors) {
+        return res.status(403).json(error.errors[field].message);
+      }
+    }else{
+        return res.status(500).json(error);
+    }
   }
 };
