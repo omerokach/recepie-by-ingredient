@@ -34,14 +34,18 @@ module.exports.signup_post = async (req, res) => {
   try {
     const ifExist = await User.find({email: email});
     console.log(ifExist);
-    // password = hashSync(password, genSaltSync(10));
-    // console.log({ email, firstName, lastName, password });
-    // const newUser = new User({ email, firstName, lastName, password });
-    // const saveRes = await newUser.save();
-    // const token = createToken(newUser);
-    // const refreshToken = createRefreshToken(newUser);
-    // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    // res.status(201).json({ newUser });
+    if(ifExist){
+        return res.status(409).send("User already exist");
+    }else{
+        password = hashSync(password, genSaltSync(10));
+        console.log({ email, firstName, lastName, password });
+        const newUser = new User({ email, firstName, lastName, password });
+        const saveRes = await newUser.save();
+        const token = createToken(newUser);
+        const refreshToken = createRefreshToken(newUser);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(201).json({ newUser });
+    }
   } catch (error) {
     res.status(500).json(error);
   }
