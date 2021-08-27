@@ -1,0 +1,1 @@
+export const rbiEndPoint = "http://localhost:3001/findByIngredients"

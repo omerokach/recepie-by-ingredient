@@ -20,6 +20,7 @@ const stringAddapting = (stringifiedData) => {
 
 module.exports.findByIngredients_get = async (req, res) => {
   const { ingredients } = req.query;
+  console.log(ingredients)
   const ingredientsStringForApi = ingredients.replace(/,/g, ",+");
   try {
     const response = await axios.get(

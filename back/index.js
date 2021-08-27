@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/user", userRoute);
-app.use("/findByIngredients",checkUser, findByIngredientsRoute);
+app.use("/findByIngredients", findByIngredientsRoute);
 
 
 app.listen(PORT, () =>
