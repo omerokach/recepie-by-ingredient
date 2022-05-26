@@ -33,21 +33,23 @@ function Main() {
 
   return (
     <>
-      <div>Main</div>
-      <form className={classes.root} noValidate autoComplete="off">
-        <TextField
-          onChange={(e) => setIngredientsTextField(e.target.value)}
-          id="filled-basic"
-          label="Ingredient"
-          variant="filled"
-        />
-        <Button
-          onClick={(e) => getRecipeByIngredient(e, ingredientsTextField)}
-          variant="contained"
-        >
-          Default
-        </Button>
-      </form>
+        <div className="main-container">
+          <div>Main</div>
+          <form className={classes.root} noValidate autoComplete="off">
+            <TextField
+              onChange={(e) => setIngredientsTextField(e.target.value)}
+              id="filled-basic"
+              label="Ingredient"
+              variant="filled"
+              />
+            <Button
+              onClick={(e) => getRecipeByIngredient(e, ingredientsTextField)}
+              variant="contained"
+              >
+              Search
+            </Button>
+          </form>
+        </div>
     </>
   );
 }
