@@ -24,7 +24,8 @@ module.exports.findByIngredients_get = async (req, res) => {
   const ingredientsStringForApi = ingredients.replace(/,/g, ",+");
   try {
     const response = await axios.get(
-      `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${API_PRIVATE_KEY}&ingredients=${ingredientsStringForApi}&number=10`
+      // `https://api.spoonacular.com/recipes/findByIngredients?apiKey=${API_PRIVATE_KEY}&ingredients=${ingredientsStringForApi}&number=10`
+      `https://api.spoonacular.com/recipes/findByIngredients?apiKey=06087f5a9a7c4413a1303202b5f15580&ingredients=${ingredientsStringForApi}&number=10`
     );
     let responseObjArray = response.data;
     let stringify = JSON.stringify(responseObjArray);

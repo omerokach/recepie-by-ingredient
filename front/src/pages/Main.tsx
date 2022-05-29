@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import { Button } from "@material-ui/core";
+import { Button, ListItem } from "@material-ui/core";
 import axios from "axios";
 import { rbiEndPoint } from "../utils/api";
 import { useRef } from "react";
 import { useState } from "react";
+import { RecepieInterface } from "../utils/Interfaces";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function Main() {
   const [ingredientsTextField, setIngredientsTextField] = useState("");
+  const [recepieArr, setRecepieArr] = useState<RecepieInterface[]>([]);
   const classes = useStyles();
 
   const getRecipeByIngredient = async (
@@ -28,28 +30,43 @@ function Main() {
   ) => {
     e.preventDefault();
     const res = await axios.get(`${rbiEndPoint}?ingredients=${ingredient}`);
-    console.log(res);
+    setRecepieArr(res.data);
+    // console.log(recepieArr);
   };
+
+  useEffect(() => {
+    return;
+  });
 
   return (
     <>
-        <div className="main-container">
-          <div>Main</div>
-          <form className={classes.root} noValidate autoComplete="off">
-            <TextField
-              onChange={(e) => setIngredientsTextField(e.target.value)}
-              id="filled-basic"
-              label="Ingredient"
-              variant="filled"
-              />
-            <Button
-              onClick={(e) => getRecipeByIngredient(e, ingredientsTextField)}
-              variant="contained"
-              >
-              Search
-            </Button>
-          </form>
+      <div className="main-container">
+        <div>Main</div>
+        <form className={classes.root} noValidate autoComplete="off">
+          <TextField
+            onChange={(e) => setIngredientsTextField(e.target.value)}
+            id="filled-basic"
+            label="Ingredient"
+            variant="filled"
+          />
+        </form>
+        <div>
+          <div>
+            {recepieArr.map((recepie) => {
+              {
+                console.log(recepie);
+              }
+              return <ListItem >{recepie.title}</ListItem>;
+            })}
+          </div>
+          <Button
+            onClick={(e) => getRecipeByIngredient(e, ingredientsTextField)}
+            variant="contained"
+          >
+            Search
+          </Button>
         </div>
+      </div>
     </>
   );
 }
