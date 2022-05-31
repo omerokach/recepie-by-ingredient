@@ -12,7 +12,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />}/>
-          <Route path="/recepie" element={<RecepiePage recepie={} />}/>
         </Routes>
       </BrowserRouter>
     </div>
